@@ -386,8 +386,8 @@ class ASRTrainer(BaseTrainer):
                     seqs, scores = generator.generate_beam(
                         prompts,
                         beam_width=recognition_config['beam_width'],
-                        temperature=recognition_config['temperature'],
-                        repeat_penalty=recognition_config['repeat_penalty']
+                        temperature=recognition_config.get('temperature', 1.0),
+                        repeat_penalty=recognition_config.get('repeat_penalty', 1.0)
                     )
                     # pick best beam
                     seqs = seqs[:,0,:]
@@ -395,8 +395,8 @@ class ASRTrainer(BaseTrainer):
                 else:
                     seqs, scores = generator.generate_greedy(
                         prompts,
-                        temperature=recognition_config['temperature'],
-                        repeat_penalty=recognition_config['repeat_penalty']
+                        temperature=recognition_config.get('temperature', 1.0),
+                        repeat_penalty=recognition_config.get('repeat_penalty', 1.0)
                     )
 
                 # post-process
