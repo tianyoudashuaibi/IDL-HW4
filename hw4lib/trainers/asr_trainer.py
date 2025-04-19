@@ -212,7 +212,7 @@ class ASRTrainer(BaseTrainer):
         results = self.recognize(
             dataloader=dataloader,
             recognition_config={
-                'beam_width': 8,
+                'beam_width': 4,
                 'num_batches': None
             },
             config_name='beam',
