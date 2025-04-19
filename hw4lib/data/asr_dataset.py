@@ -78,7 +78,7 @@ class ASRDataset(Dataset):
             self._M2    = None
 
         print(f"Loading data for {partition} partition...")
-        for i in tqdm(range(self.length)):
+        for i in range(self.length):
             # 1) Load feature from (fbank_dir + base_filename)
             fbank_filename = self.fbank_files[i]
             feat_path = os.path.join(self.fbank_dir, fbank_filename)
