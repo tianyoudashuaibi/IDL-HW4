@@ -212,10 +212,10 @@ class ASRTrainer(BaseTrainer):
         results = self.recognize(
             dataloader=dataloader,
             recognition_config={
-                'beam_width': 4,
+                'beam_width': 1,
                 'num_batches': None
             },
-            config_name='beam',
+            config_name='greedy',
             max_length=getattr(self, 'text_max_len', 200)
         )
 
