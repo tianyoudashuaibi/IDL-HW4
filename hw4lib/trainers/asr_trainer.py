@@ -475,6 +475,43 @@ class ASRTrainer(BaseTrainer):
             'wer': wer.item(),
             'cer': cer.item()
         }
+
+
+    def recognize_with_best_model(
+        self,
+        dataloader,
+        checkpoint_path: str = 'checkpoint-best-metric-model.pth',
+        recognition_config: Optional[Dict[str, Any]] = None,
+        config_name: Optional[str] = None,
+        max_length: Optional[int] = None
+    ) -> List[Dict[str, Any]]:
+        """
+        Load the best validation model weights and run recognition on the given dataloader.
+        Restores the current model weights afterward.
+        """
+        # 1) Load checkpoint containing best model
+        checkpoint = torch.load(checkpoint_path, map_location=self.device)
+        
+        # 2) Backup current model state
+        current_model_state = self.model.state_dict()
+        
+        # 3) Load best model state
+        self.model.load_state_dict(checkpoint['model'])
+        
+        # 4) Run recognition
+        results = self.recognize(
+            dataloader=dataloader,
+            recognition_config=recognition_config,
+            config_name=config_name,
+            max_length=max_length
+        )
+        
+        # 5) Restore current model state
+        self.model.load_state_dict(current_model_state)
+        
+        # Return the recognition results from the best model
+        return results
+
 class ProgressiveTrainer(ASRTrainer):
     """
     Progressive Trainer class that implements curriculum learning for ASR training.
